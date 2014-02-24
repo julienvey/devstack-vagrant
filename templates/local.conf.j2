@@ -6,11 +6,31 @@ RABBIT_PASSWORD=password
 SERVICE_PASSWORD=password
 SERVICE_TOKEN=password
 
-
+# Enable Logging
+LOGFILE=/opt/stack/logs/stack.sh.log
+VERBOSE=True
+LOG_COLOR=True
 SCREEN_LOGDIR=/opt/stack/logs
 
 
 HOST_IP={{ public_ip }}
+
+HORIZON_BRANCH={{ version }}
+KEYSTONE_BRANCH={{ version }}
+GLANCE_BRANCH={{ version }}
+CINDER_BRANCH={{ version }}
+NOVA_BRANCH={{ version }}
+NEUTRON_BRANCH={{ version }}
+CEILOMETER_BRANCH={{ version }}
+HEAT_BRANCH={{ version }}
+SWIFT_BRANCH={{ version }}
+GLANCECLIENT_BRANCH={{ version }}
+KEYSTONECLIENT_BRANCH={{ version }}
+NOVACLIENT_BRANCH={{ version }}
+CINDERCLIENT_BRANCH={{ version }}
+CEILOMETERECLIENT_BRANCH={{ version }}
+OPENSTACKCLIENT_BRANCH={{ version }}
+SOLUM_BRANCH={{ version }}
 
 {% if neutron %}
 #

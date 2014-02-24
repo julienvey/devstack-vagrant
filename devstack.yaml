@@ -3,9 +3,9 @@
   vars:
     devstack_repo: git://github.com/openstack-dev/devstack.git
     public_ip: 192.168.27.100
-    version: stable/havana
+    version: master
     neutron: True
-    swift: True
+    swift: False
     security_groups: False
     tempest: False
     keyring_config_dir: /home/vagrant/.local/share/python_keyring
