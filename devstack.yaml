@@ -3,7 +3,8 @@
   vars:
     devstack_repo: git://github.com/openstack-dev/devstack.git
     public_ip: 192.168.27.100
-    version: master
+    openstack_branch: master
+    devstack_branch: master
     neutron: True
     swift: False
     security_groups: True
@@ -26,7 +27,7 @@
       sudo: True
 
     - name: checkout devstack
-      git: "repo={{ devstack_repo }} dest=/home/vagrant/devstack version={{ version }}"
+      git: "repo={{ devstack_repo }} dest=/home/vagrant/devstack version={{ devstack_branch }}"
 
     - name: local.conf
       template: src=templates/local.conf.j2 dest=/home/vagrant/devstack/local.conf
