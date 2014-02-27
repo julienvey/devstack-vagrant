@@ -9,6 +9,7 @@
     swift: False
     security_groups: True
     tempest: True
+    git_mirror: git.openstack.org
     keyring_config_dir: /home/vagrant/.local/share/python_keyring
 
   tasks:

@@ -13,7 +13,6 @@ VERBOSE=True
 LOG_COLOR=True
 SCREEN_LOGDIR=/opt/stack/logs
 
-
 HOST_IP={{ public_ip }}
 
 HORIZON_BRANCH={{ openstack_branch }}
@@ -29,9 +28,26 @@ GLANCECLIENT_BRANCH={{ openstack_branch }}
 KEYSTONECLIENT_BRANCH={{ openstack_branch }}
 NOVACLIENT_BRANCH={{ openstack_branch }}
 CINDERCLIENT_BRANCH={{ openstack_branch }}
-CEILOMETERECLIENT_BRANCH={{ openstack_branch }}
+CEILOMETERCLIENT_BRANCH={{ openstack_branch }}
 OPENSTACKCLIENT_BRANCH={{ openstack_branch }}
 SOLUM_BRANCH={{ openstack_branch }}
+
+HORIZON_REPO=git://{{ git_mirror }}/openstack/horizon.git
+KEYSTONE_REPO=git://{{ git_mirror }}/openstack/keystone.git
+GLANCE_REPO=git://{{ git_mirror }}/openstack/glance.git
+CINDER_REPO=git://{{ git_mirror }}/openstack/cinder.git
+NOVA_REPO=git://{{ git_mirror }}/openstack/nova.git
+NEUTRON_REPO=git://{{ git_mirror }}/openstack/neutron.git
+CEILOMETER_REPO=git://{{ git_mirror }}/openstack/ceilometer.git
+HEAT_REPO=git://{{ git_mirror }}/openstack/heat.git
+SWIFT_REPO=git://{{ git_mirror }}/openstack/swift.git
+GLANCECLIENT_REPO=git://{{ git_mirror }}/openstack/python-glanceclient.git
+KEYSTONECLIENT_REPO=git://{{ git_mirror }}/openstack/python-keystoneclient.git
+NOVACLIENT_REPO=git://{{ git_mirror }}/openstack/python-novaclient.git
+CINDERCLIENT_REPO=git://{{ git_mirror }}/openstack/python-cinderclient.git
+CEILOMETERCLIENT_REPO=git://{{ git_mirror }}/openstack/python-ceilometerclient.git
+OPENSTACKCLIENT_REPO=git://{{ git_mirror }}/openstack/python-openstackclient.git
+SOLUM_REPO=git://{{ git_mirror }}/stackforge/solum.git
 
 {% if neutron %}
 #
