@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
     config.vm.network :private_network, ip: "192.168.27.100"
     # eth2, this will be the OpenStack "public" network, use DevStack default
     config.vm.network :private_network, ip: "172.24.4.225", :netmask => "255.255.255.224", :auto_config => false
-    config.vm.synced_folder ENV['STACKSOURCE'], "/opt/stack", nfs: true
+    #config.vm.synced_folder ENV['STACKSOURCE'], "/opt/stack", :nfs => true
     config.vm.provider :virtualbox do |vb|
         vb.customize ["modifyvm", :id, "--memory", 4096]
         vb.customize ["modifyvm", :id, "--cpus", "2"]  
@@ -25,13 +25,11 @@ Vagrant.configure("2") do |config|
         ansible.playbook = "devstack.yaml"
         ansible.verbose = "v"
     end
-    config.vm.provision :shell, :inline => "cd devstack; sudo -u vagrant env HOME=/home/vagrant ./stack.sh"
+    config.vm.provision :shell, :inline => "sudo mkdir /opt/stack/solum; sudo git clone https://github.com/stackforge/solum.git /opt/stack/solum"
+    config.vm.provision :shell, :inline => "cd /opt/stack/solum/contrib/devstack; cp lib/solum /home/vagrant/devstack/lib"
+    config.vm.provision :shell, :inline => "cp extras.d/70-solum.sh /home/vagrant/devstack/extras.d"
+    
+    config.vm.provision :shell, :inline => "cd /home/vagrant/devstack; sudo -u vagrant env HOME=/home/vagrant ./stack.sh"
     config.vm.provision :shell, :inline => "ovs-vsctl add-port br-ex eth2"
 
-    # Workaround for https://bugs.launchpad.net/devstack/+bug/1243075
-    config.vm.provision :ansible do |ansible|
-        ansible.host_key_checking = false
-        ansible.playbook = "horizon-workaround.yaml"
-        ansible.verbose = "v"
-    end
 end
