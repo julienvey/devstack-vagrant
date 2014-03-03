@@ -25,7 +25,7 @@ Vagrant.configure("2") do |config|
         ansible.playbook = "devstack.yaml"
         ansible.verbose = "v"
     end
-    config.vm.provision :shell, :inline => "sudo mkdir /opt/stack/solum; sudo git clone https://github.com/stackforge/solum.git /opt/stack/solum"
+    config.vm.provision :shell, :inline => "sudo mkdir /opt/stack/; sudo mkdir /opt/stack/solum; sudo git clone https://github.com/stackforge/solum.git /opt/stack/solum"
     config.vm.provision :shell, :inline => "cd /opt/stack/solum/contrib/devstack; sudo cp lib/solum /home/vagrant/devstack/lib"
     config.vm.provision :shell, :inline => "cp extras.d/70-solum.sh /home/vagrant/devstack/extras.d"
     
