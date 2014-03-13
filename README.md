@@ -26,7 +26,7 @@ Install the following applications on your local machine first:
 
  * [VirtualBox][5]
  * [Vagrant][2] 1.3.3 or greater
- * [Ansible][3] < 1.2
+ * [Ansible][3]
 
 If you want to try out the OpenStack command-line tools once DevStack is running, install the following Python packages:
 
