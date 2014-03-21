@@ -28,7 +28,11 @@ Vagrant.configure("2") do |config|
     config.vm.provision :shell, :inline => "sudo mkdir /opt/stack/; sudo mkdir /opt/stack/solum; sudo git clone https://github.com/stackforge/solum.git /opt/stack/solum"
     config.vm.provision :shell, :inline => "cd /opt/stack/solum/contrib/devstack; sudo cp lib/solum /home/vagrant/devstack/lib"
     config.vm.provision :shell, :inline => "cd /opt/stack/solum/contrib/devstack; sudo cp extras.d/70-solum.sh /home/vagrant/devstack/extras.d"
+    config.vm.provision :shell, :inline => "cd /opt/stack/; sudo git clone https://github.com/stackforge/python-solumclient.git"
+    config.vm.provision :shell, :inline => "sudo easy_install -U setuptools"
+    config.vm.provision :shell, :inline => "cd /opt/stack/python-solumclient/; sudo python setup.py install"
     
+
     config.vm.provision :shell, :inline => "cd /home/vagrant/devstack; sudo -u vagrant env HOME=/home/vagrant ./stack.sh"
     config.vm.provision :shell, :inline => "ovs-vsctl add-port br-ex eth2"
 
