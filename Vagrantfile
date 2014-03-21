@@ -30,6 +30,7 @@ Vagrant.configure("2") do |config|
     config.vm.provision :shell, :inline => "cd /opt/stack/solum/contrib/devstack; sudo cp extras.d/70-solum.sh /home/vagrant/devstack/extras.d"
     config.vm.provision :shell, :inline => "cd /opt/stack/; sudo git clone git://github.com/stackforge/python-solumclient.git"
     config.vm.provision :shell, :inline => "sudo apt-get install -y python-setuptools; sudo easy_install -U setuptools"
+    config.vm.provision :shell, :inline => "sudo apt-get -y install -o Dpkg::Options::='--force-confold' --force-yes libguestfs-tools"
     
     
 
