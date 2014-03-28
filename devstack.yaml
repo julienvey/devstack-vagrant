@@ -6,7 +6,7 @@
     openstack_branch: master
     devstack_branch: master
     neutron: True
-    swift: False
+    swift: True
     solum: True
     security_groups: True
     tempest: True
