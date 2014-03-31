@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
     config.vm.network :private_network, ip: "172.24.4.225", :netmask => "255.255.255.224", :auto_config => false
     #config.vm.synced_folder ENV['STACKSOURCE'], "/opt/stack", :nfs => true
     config.vm.provider :virtualbox do |vb|
-        vb.customize ["modifyvm", :id, "--memory", 4096]
+        vb.customize ["modifyvm", :id, "--memory", 8192]
         vb.customize ["modifyvm", :id, "--cpus", "2"]  
         vb.customize ["modifyvm", :id, "--ioapic", "on"] 
        	# eth2 must be in promiscuous mode for floating IPs to be accessible
