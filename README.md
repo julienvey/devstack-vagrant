@@ -143,7 +143,7 @@ To run as the admin user:
 
 ## Initial networking configuration
 
-![Network topology](topology.png)
+![Network topology](assets/topology.png)
 
 
 DevStack configures an internal network ("private") and an external network ("public"), with a router ("router1") connecting the two together. The router is configured to use its interface on the "public" network as the gateway.
