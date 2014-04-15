@@ -35,7 +35,6 @@ Vagrant.configure("2") do |config|
         ansible.playbook = "devstack.yaml"
         ansible.verbose = "v"
     end
-    #config.vm.provision :shell, :inline => "sudo apt-get install -y python-setuptools; sudo easy_install -U setuptools"
     config.vm.provision :shell, :inline => $solum_script
     
     config.vm.provision :shell, :inline => "cd /home/vagrant/devstack; sudo -u vagrant env HOME=/home/vagrant ./stack.sh"
