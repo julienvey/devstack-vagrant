@@ -1,6 +1,16 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+$solum_script = <<SCRIPT
+    mkdir /opt/stack/
+    mkdir /opt/stack/solum
+    git clone git://github.com/stackforge/solum.git /opt/stack/solum
+    cd /opt/stack/solum/contrib/devstack
+    cp lib/solum /home/vagrant/devstack/lib
+    cp extras.d/70-solum.sh /home/vagrant/devstack/extras.d
+SCRIPT
+
+
 
 Vagrant.configure("2") do |config|
 
@@ -25,16 +35,10 @@ Vagrant.configure("2") do |config|
         ansible.playbook = "devstack.yaml"
         ansible.verbose = "v"
     end
-    config.vm.provision :shell, :inline => "sudo mkdir /opt/stack/; sudo mkdir /opt/stack/solum; sudo git clone git://github.com/stackforge/solum.git /opt/stack/solum"
-    config.vm.provision :shell, :inline => "cd /opt/stack/solum/contrib/devstack; sudo cp lib/solum /home/vagrant/devstack/lib"
-    config.vm.provision :shell, :inline => "cd /opt/stack/solum/contrib/devstack; sudo cp extras.d/70-solum.sh /home/vagrant/devstack/extras.d"
-    config.vm.provision :shell, :inline => "cd /opt/stack/; sudo git clone git://github.com/stackforge/python-solumclient.git"
-    config.vm.provision :shell, :inline => "sudo apt-get install -y python-setuptools; sudo easy_install -U setuptools"
+    #config.vm.provision :shell, :inline => "sudo apt-get install -y python-setuptools; sudo easy_install -U setuptools"
+    config.vm.provision :shell, :inline => $solum_script
     
-    
-
     config.vm.provision :shell, :inline => "cd /home/vagrant/devstack; sudo -u vagrant env HOME=/home/vagrant ./stack.sh"
-    config.vm.provision :shell, :inline => "cd /opt/stack/python-solumclient/; sudo python setup.py install"
     config.vm.provision :shell, :inline => "ovs-vsctl add-port br-ex eth2"
 
 end
