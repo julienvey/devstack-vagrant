@@ -1,7 +1,8 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$solum_prepare_script = <<SCRIPT
+$solum_prepare = <<SCRIPT
+    export SOLUM_INSTALL_CEDARISH=True
     mkdir -p /opt/stack/
     mkdir -p /opt/stack/solum
     git clone git://github.com/stackforge/solum.git /opt/stack/solum
@@ -10,7 +11,7 @@ $solum_prepare_script = <<SCRIPT
     cp extras.d/70-solum.sh /home/vagrant/devstack/extras.d
 SCRIPT
 
-$murano_prepare_script = <<SCRIPT
+$murano_prepare = <<SCRIPT
     mkdir -p /opt/stack/
     mkdir -p /opt/stack/murano-api
     git clone git://github.com/stackforge/murano-api.git /opt/stack/murano-api
@@ -18,6 +19,15 @@ $murano_prepare_script = <<SCRIPT
     cp lib/murano /home/vagrant/devstack/lib
     cp lib/murano-dashboard /home/vagrant/devstack/lib
     cp extras.d/70-murano.sh /home/vagrant/devstack/extras.d
+SCRIPT
+
+$stack_sh_run = = <<SCRIPT
+    cd /home/vagrant/devstack;
+    sudo -u vagrant env HOME=/home/vagrant SOLUM_INSTALL_CEDARISH=True ./stack.sh
+SCRIPT
+
+$devstack_post_install = = <<SCRIPT
+    ovs-vsctl add-port br-ex eth2
 SCRIPT
 
 Vagrant.configure("2") do |config|
@@ -42,8 +52,8 @@ Vagrant.configure("2") do |config|
         ansible.playbook = "devstack.yaml"
         ansible.verbose = "v"
     end
-    config.vm.provision :shell, :inline => $solum_prepare_script
-    config.vm.provision :shell, :inline => $murano_prepare_script
-    config.vm.provision :shell, :inline => "cd /home/vagrant/devstack; sudo -u vagrant env HOME=/home/vagrant ./stack.sh"
-    config.vm.provision :shell, :inline => "ovs-vsctl add-port br-ex eth2"
+    config.vm.provision :shell, :inline => $solum_prepare
+    config.vm.provision :shell, :inline => $murano_prepare
+    config.vm.provision :shell, :inline => $stack_sh_run
+    config.vm.provision :shell, :inline => $devstack_post_install
 end
