@@ -16,7 +16,7 @@ $murano_prepare_script = <<SCRIPT
     git clone git://github.com/stackforge/murano-api.git /opt/stack/murano-api
     cd /opt/stack/murano-api/contrib/devstack
     cp lib/murano /home/vagrant/devstack/lib
-    cp lib/murano-dashboard /home/vagrant/lib
+    cp lib/murano-dashboard /home/vagrant/devstack/lib
     cp extras.d/70-murano.sh /home/vagrant/devstack/extras.d
 SCRIPT
 
