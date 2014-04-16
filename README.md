@@ -7,8 +7,8 @@ Ansible generates a `local.conf` file that defaults to:
 
  * Use Neutron for networking
  * Install Swift for object storage
- * Disable security groups
-
+ * Install Solum for Application development
+ * Install Tempest for functional testing
 
 This project was inspired by Brian Waldon's [vagrant_devstack][1] repository.
 
@@ -222,4 +222,3 @@ Finally, access your instance:
 
 The included `boot-cirros.py` file illustrates how to executes all of the
 above commands using the Python bindings.
-

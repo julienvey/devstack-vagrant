@@ -1,12 +1,15 @@
 ---
-public_ip: 192.168.27.100
+#Devstack config
 openstack_branch: master
 devstack_branch: master
+git_mirror: git.openstack.org
+reclone: True
+#Openstack: Enable/Disable services and features
 neutron: True
 swift: True
 solum: True
-security_groups: True
 tempest: True
-reclone: True
-git_mirror: git.openstack.org
+security_groups: True
+#Vagrant specific configuration
+public_ip: 192.168.27.100
 keyring_config_dir: /home/vagrant/.local/share/python_keyring
