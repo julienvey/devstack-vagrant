@@ -89,6 +89,11 @@ enable_service solum-conductor
 enable_service solum-worker
 {% endif %}
 
+{% if murano %}
+# Enable Murano
+enable_service murano
+enable_service murano-api
+{% endif %}
 
 {% if not security_groups %}
 # Disable security groups entirely

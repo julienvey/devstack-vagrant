@@ -8,6 +8,7 @@ reclone: True
 neutron: True
 swift: True
 solum: True
+murano: False
 tempest: True
 security_groups: True
 #Vagrant specific configuration
