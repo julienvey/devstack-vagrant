@@ -1,7 +1,7 @@
 # Neutron-enabled DevStack in a Vagrant VM with Ansible
 
 This repository contains a Vagrantfile and an accompanying Ansible playbook
-that sets up a VirtualBox virtual machine that installs [DevStack][4].
+that sets up a VirtualBox virtual machine that installs [DevStack](http://devstack.org).
 
 Ansible generates a `local.conf` file that defaults to:
 
@@ -10,23 +10,20 @@ Ansible generates a `local.conf` file that defaults to:
  * Install Solum for Application development
  * Install Tempest for functional testing
 
-This project was inspired by Brian Waldon's [vagrant_devstack][1] repository.
-
 ## Memory usage
 
-By default, the VM uses 4GB of RAM. If you want to change this, edit the
+By default, the VM uses 8GB of RAM. If you want to change this, edit the
 following line in Vagrantfile:
 
-        vb.customize ["modifyvm", :id, "--memory", 4096]
+    vb.customize ["modifyvm", :id, "--memory", 8192]
 
 ## Prereqs
 
-
 Install the following applications on your local machine first:
 
- * [VirtualBox][5]
- * [Vagrant][2] 1.3.3 or greater
- * [Ansible][3]
+ * [VirtualBox](http://virtualbox.org)
+ * [Vagrant](http://vagrantup.com)
+ * [Ansible](http://ansibleworks.com)
 
 If you want to try out the OpenStack command-line tools once DevStack is running, install the following Python packages:
 
@@ -37,22 +34,10 @@ The easiest way to install the Python packages is with pip:
 
     sudo pip install python-novaclient python-neutronclient
 
-
-[1]: https://github.com/bcwaldon/vagrant_devstack
-[2]: http://vagrantup.com
-[3]: http://ansibleworks.com
-[4]: http://devstack.org
-[5]: http://virtualbox.org
-
-
 ## Boot the virtual machine and install DevStack
 
-Grab this repo, set the permissions on the vagrant ssh key, and do a `vagrant
-up`, like so:
-
-    git clone https://github.com/lorin/devstack-vm
-    cd devstack-vm
-    chmod 0600 id_vagrant
+    git clone https://github.com/julienvey/devstack-vagrant
+    cd devstack-vagrant
     vagrant up
 
 The `vagrant up` command will:
@@ -74,11 +59,10 @@ network address translation (NAT).
 
 To enable NAT, issue the following commands in your host, as root:
 
-```
+```bash
 echo 1 > /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
 ```
-
 
 ## Troubleshooting
 
@@ -114,15 +98,11 @@ If you see this, retry by doing:
 
 The VM is accessible at 192.168.27.100
 
-You can use ssh to access it using `vagrant` as username and password, or use the
-provided `id_vagrant` private key to avoid typing a password.
+The easiest way to log in the VM, is to type `vagrant ssh`
 
-You can also type `vagrant ssh` to start an ssh session.
+You can also use access it using `vagrant` as username and password, or use the provided `id_vagrant` private key to avoid typing a password.
 
 Note that you do not need to be logged in to the VM to run commands against the OpenStack endpoint.
-
-
-
 
 ## Loading OpenStack credentials
 
