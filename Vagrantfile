@@ -21,12 +21,12 @@ $murano_prepare = <<SCRIPT
     cp extras.d/70-murano.sh /home/vagrant/devstack/extras.d
 SCRIPT
 
-$stack_sh_run = = <<SCRIPT
+$stack_sh_run = <<SCRIPT
     cd /home/vagrant/devstack;
     sudo -u vagrant env HOME=/home/vagrant SOLUM_INSTALL_CEDARISH=True ./stack.sh
 SCRIPT
 
-$devstack_post_install = = <<SCRIPT
+$devstack_post_install = <<SCRIPT
     ovs-vsctl add-port br-ex eth2
 SCRIPT
 
@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
     # eth2, this will be the OpenStack "public" network, use DevStack default
     config.vm.network :private_network, ip: "172.24.4.225", :netmask => "255.255.255.224", :auto_config => false
     config.vm.provider :virtualbox do |vb|
-        vb.customize ["modifyvm", :id, "--memory", 4096]
+        vb.customize ["modifyvm", :id, "--memory", 8192]
         vb.customize ["modifyvm", :id, "--cpus", "2"]
         vb.customize ["modifyvm", :id, "--ioapic", "on"]
        	# eth2 must be in promiscuous mode for floating IPs to be accessible
