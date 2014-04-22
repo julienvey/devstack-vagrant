@@ -3,7 +3,7 @@
 openstack_branch: master
 devstack_branch: master
 git_mirror: git.openstack.org
-reclone: True
+reclone: False
 #Openstack: Enable/Disable services and features
 neutron: True
 swift: True
@@ -11,6 +11,7 @@ solum: True
 murano: False
 tempest: True
 security_groups: True
+docker: True
 #Vagrant specific configuration
 public_ip: 192.168.27.100
 keyring_config_dir: /home/vagrant/.local/share/python_keyring

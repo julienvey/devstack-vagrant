@@ -2,7 +2,6 @@
 # vi: set ft=ruby :
 
 $solum_prepare = <<SCRIPT
-    export SOLUM_INSTALL_CEDARISH=True
     mkdir -p /opt/stack/
     mkdir -p /opt/stack/solum
     git clone git://github.com/stackforge/solum.git /opt/stack/solum
@@ -21,9 +20,23 @@ $murano_prepare = <<SCRIPT
     cp extras.d/70-murano.sh /home/vagrant/devstack/extras.d
 SCRIPT
 
+$nova_docker_prepare = <<SCRIPT
+    mkdir -p /opt/stack/
+    mkdir -p /opt/stack/nova-docker
+    git clone git://github.com/stackforge/nova-docker.git /opt/stack/nova-docker
+    cd /opt/stack/nova-docker/contrib/devstack
+    cp lib/nova_plugins/hypervisor-docker /home/vagrant/devstack/lib/nova_plugins
+    cp extras.d/70-docker.sh /home/vagrant/devstack/extras.d
+    # Hack around https://bugs.launchpad.net/nova-docker/+bug/1309490
+    mkdir -p /opt/stack/nova
+    git clone git://github.com/openstack/nova.git /opt/stack/nova
+SCRIPT
+
 $stack_sh_run = <<SCRIPT
     cd /home/vagrant/devstack;
     sudo -u vagrant env HOME=/home/vagrant SOLUM_INSTALL_CEDARISH=True ./stack.sh
+    # docker driver hack
+    cp /opt/stack/nova-docker/etc/nova/rootwrap.d/docker.filters /etc/nova/rootwrap.d/
 SCRIPT
 
 $devstack_post_install = <<SCRIPT
@@ -54,6 +67,7 @@ Vagrant.configure("2") do |config|
     end
     config.vm.provision :shell, :inline => $solum_prepare
     config.vm.provision :shell, :inline => $murano_prepare
+    config.vm.provision :shell, :inline => $nova_docker_prepare
     config.vm.provision :shell, :inline => $stack_sh_run
     config.vm.provision :shell, :inline => $devstack_post_install
 end

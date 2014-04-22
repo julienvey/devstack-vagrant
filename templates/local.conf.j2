@@ -7,6 +7,13 @@ SERVICE_PASSWORD=password
 SERVICE_TOKEN=password
 #MULTI_HOST=1
 
+{% if docker %}
+DOCKER_REGISTRY_IMAGE=samalba/docker-registry
+VIRT_DRIVER=docker
+SOLUM_IMAGE_FORMAT=docker
+DEFAULT_IMAGE_NAME=cirros
+{% endif %}
+
 # Enable Logging
 LOGFILE=/opt/stack/logs/stack.sh.log
 VERBOSE=True
