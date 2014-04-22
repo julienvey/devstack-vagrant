@@ -8,7 +8,7 @@ SERVICE_TOKEN=password
 #MULTI_HOST=1
 
 {% if docker %}
-DOCKER_REGISTRY_IMAGE=samalba/docker-registry
+DOCKER_REGISTRY_IMAGE=registry
 VIRT_DRIVER=docker
 SOLUM_IMAGE_FORMAT=docker
 DEFAULT_IMAGE_NAME=cirros
@@ -26,7 +26,7 @@ RECLONE={{ reclone }}
 
 # Additional images
 IMAGE_URLS=http://download.cirros-cloud.net/0.3.1/cirros-0.3.1-x86_64-uec.tar.gz
-{% if solum %}
+{% if solum and not docker %}
 IMAGE_URLS+=,http://cc42a68525a2dda0151c-9a7653a0ba84bd9342f239dc5349667e.r38.cf1.rackcdn.com/cedarish.qcow2
 {% endif %}
 
