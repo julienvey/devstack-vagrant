@@ -60,6 +60,21 @@ Vagrant.configure("2") do |config|
        	# eth2 must be in promiscuous mode for floating IPs to be accessible
        	vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
     end
+    config.vm.provider :openstack do |os|
+      os.server_name = "vagrant-devstack"
+      os.username = ENV['OS_USERNAME']
+      os.floating_ip = "185.39.216.118"
+      os.api_key = ENV['OS_PASSWORD']
+      #os.network = "private"
+      os.flavor = /Linux-XL.2plus-4vCpu-32G/
+      os.image = /ubuntu-12.04_x86_64_LVM/
+      os.openstack_auth_url = ENV['OS_AUTH_URL']
+      os.openstack_compute_url = ENV['OS_COMPUTE_URL']
+      os.availability_zone = "nova"
+      os.tenant_name = ENV['OS_TENANT_NAME']
+      os.keypair_name = "julien-mac"
+      os.ssh_username = "stack"
+    end
     config.vm.provision :ansible do |ansible|
         ansible.host_key_checking = false
         ansible.playbook = "devstack.yaml"
