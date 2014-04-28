@@ -1,13 +1,14 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+require 'vagrant-openstack-provider'
 
 $solum_prepare = <<SCRIPT
     mkdir -p /opt/stack/
     mkdir -p /opt/stack/solum
     git clone git://github.com/stackforge/solum.git /opt/stack/solum
     cd /opt/stack/solum/contrib/devstack
-    cp lib/solum /home/vagrant/devstack/lib
-    cp extras.d/70-solum.sh /home/vagrant/devstack/extras.d
+    cp lib/solum /opt/stack/devstack/lib
+    cp extras.d/70-solum.sh /opt/stack/devstack/extras.d
 SCRIPT
 
 $murano_prepare = <<SCRIPT
@@ -15,9 +16,9 @@ $murano_prepare = <<SCRIPT
     mkdir -p /opt/stack/murano-api
     git clone git://github.com/stackforge/murano-api.git /opt/stack/murano-api
     cd /opt/stack/murano-api/contrib/devstack
-    cp lib/murano /home/vagrant/devstack/lib
-    cp lib/murano-dashboard /home/vagrant/devstack/lib
-    cp extras.d/70-murano.sh /home/vagrant/devstack/extras.d
+    cp lib/murano /opt/stack/devstack/lib
+    cp lib/murano-dashboard /opt/stack/devstack/lib
+    cp extras.d/70-murano.sh /opt/stack/devstack/extras.d
 SCRIPT
 
 $nova_docker_prepare = <<SCRIPT
@@ -25,22 +26,22 @@ $nova_docker_prepare = <<SCRIPT
     mkdir -p /opt/stack/nova-docker
     git clone git://github.com/stackforge/nova-docker.git /opt/stack/nova-docker
     cd /opt/stack/nova-docker/contrib/devstack
-    cp lib/nova_plugins/hypervisor-docker /home/vagrant/devstack/lib/nova_plugins
-    cp extras.d/70-docker.sh /home/vagrant/devstack/extras.d
+    cp lib/nova_plugins/hypervisor-docker /opt/stack/devstack/lib/nova_plugins
+    cp extras.d/70-docker.sh /opt/stack/devstack/extras.d
     # Hack around https://bugs.launchpad.net/nova-docker/+bug/1309490
     mkdir -p /opt/stack/nova
     git clone git://github.com/openstack/nova.git /opt/stack/nova
 SCRIPT
 
 $stack_sh_run = <<SCRIPT
-    cd /home/vagrant/devstack;
-    sudo -u vagrant env HOME=/home/vagrant SOLUM_INSTALL_CEDARISH=True ./stack.sh
-    # docker driver hack
-    cp /opt/stack/nova-docker/etc/nova/rootwrap.d/docker.filters /etc/nova/rootwrap.d/
+    cd /opt/stack/devstack;
+    env SOLUM_INSTALL_CEDARISH=True ./stack.sh
 SCRIPT
 
 $devstack_post_install = <<SCRIPT
-    ovs-vsctl add-port br-ex eth2
+    # docker driver hack
+    cp /opt/stack/nova-docker/etc/nova/rootwrap.d/docker.filters /etc/nova/rootwrap.d/
+    # ovs-vsctl add-port br-ex eth2
 SCRIPT
 
 Vagrant.configure("2") do |config|
@@ -61,6 +62,9 @@ Vagrant.configure("2") do |config|
        	vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
     end
     config.vm.provider :openstack do |os|
+      #We have to do this otherwise, it doesn't use the right key
+      #TODO(julienvey) Investigate on that
+      config.ssh.private_key_path = '~/.ssh/id_rsa'
       os.server_name = "vagrant-devstack"
       os.username = ENV['OS_USERNAME']
       os.floating_ip = "185.39.216.118"
@@ -83,6 +87,6 @@ Vagrant.configure("2") do |config|
     config.vm.provision :shell, :inline => $solum_prepare
     config.vm.provision :shell, :inline => $murano_prepare
     config.vm.provision :shell, :inline => $nova_docker_prepare
-    config.vm.provision :shell, :inline => $stack_sh_run
+    config.vm.provision :shell, :privileged => false, :inline => $stack_sh_run
     config.vm.provision :shell, :inline => $devstack_post_install
 end
