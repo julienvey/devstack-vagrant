@@ -20,7 +20,11 @@ VERBOSE=True
 LOG_COLOR=True
 SCREEN_LOGDIR=/opt/stack/logs
 
+{% if vagrant_provider == 'openstack' %}
+HOST_IP={{ ansible_default_ipv4.address }}
+{% else %}
 HOST_IP={{ public_ip }}
+{% endif %}
 
 RECLONE={{ reclone }}
 
