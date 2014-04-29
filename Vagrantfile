@@ -36,35 +36,60 @@ SCRIPT
 $stack_sh_run = <<SCRIPT
     cd /opt/stack/devstack;
     env SOLUM_INSTALL_CEDARISH=True ./stack.sh
+    # docker driver hack
+    cp /opt/stack/nova-docker/etc/nova/rootwrap.d/docker.filters /etc/nova/rootwrap.d/
 SCRIPT
 
 $devstack_post_install = <<SCRIPT
-    # docker driver hack
-    cp /opt/stack/nova-docker/etc/nova/rootwrap.d/docker.filters /etc/nova/rootwrap.d/
-    # ovs-vsctl add-port br-ex eth2
+    ovs-vsctl add-port br-ex eth2
 SCRIPT
 
 Vagrant.configure("2") do |config|
-
-    config.vm.box = "saucy64"
-    config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box"
     config.vm.network :forwarded_port, guest: 80, host: 8080 # Horizon
     config.vm.network :forwarded_port, guest: 8774, host: 8774 # Compute API
-    # eth1, this will be the endpoint
-    config.vm.network :private_network, ip: "192.168.27.100"
-    # eth2, this will be the OpenStack "public" network, use DevStack default
-    config.vm.network :private_network, ip: "172.24.4.225", :netmask => "255.255.255.224", :auto_config => false
-    config.vm.provider :virtualbox do |vb|
-        vb.customize ["modifyvm", :id, "--memory", 8192]
-        vb.customize ["modifyvm", :id, "--cpus", "2"]
-        vb.customize ["modifyvm", :id, "--ioapic", "on"]
-       	# eth2 must be in promiscuous mode for floating IPs to be accessible
-       	vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
+    
+    do_provision(config)
+    config_virtualbox(config)
+    config_openstack(config)
+end
+
+def do_provision(config)
+    config.vm.provision :ansible do |ansible|
+      ansible.host_key_checking = false
+      ansible.playbook = "devstack.yaml"
+      ansible.verbose = "v"
+      ansible.extra_vars = {
+        vagrant_provider: (ARGV[2] || ENV['VAGRANT_DEFAULT_PROVIDER'] || :virtualbox).to_sym
+      }
     end
-    config.vm.provider :openstack do |os|
-      #We have to do this otherwise, it doesn't use the right key
-      #TODO(julienvey) Investigate on that
-      config.ssh.private_key_path = '~/.ssh/id_rsa'
+    config.vm.provision :shell, :inline => $solum_prepare
+    config.vm.provision :shell, :inline => $murano_prepare
+    config.vm.provision :shell, :inline => $nova_docker_prepare
+    config.vm.provision :shell, :privileged => false, :inline => $stack_sh_run
+end
+
+def config_virtualbox(config)
+    config.vm.provider :virtualbox do |vb, override|
+      config.vm.box = "saucy64"
+      config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box"
+      # eth1, this will be the endpoint
+      config.vm.network :private_network, ip: "192.168.27.100"
+      # eth2, this will be the OpenStack "public" network, use DevStack default
+      config.vm.network :private_network, ip: "172.24.4.225", :netmask => "255.255.255.224", :auto_config => false
+      config.vm.provision :shell, :inline => $devstack_post_install
+      vb.customize ["modifyvm", :id, "--memory", 8192]
+      vb.customize ["modifyvm", :id, "--cpus", "2"]
+      vb.customize ["modifyvm", :id, "--ioapic", "on"]
+      # eth2 must be in promiscuous mode for floating IPs to be accessible
+      vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
+    end
+end
+
+def config_openstack(config)
+    config.vm.provider :openstack do |os, override|
+      override.vm.box = "dummy-openstack"
+      override.vm.box_url = "https://github.com/ggiamarchi/vagrant-openstack/raw/master/source/dummy.box"
+      override.ssh.private_key_path = '~/.ssh/id_rsa'
       os.server_name = "vagrant-devstack"
       os.username = ENV['OS_USERNAME']
       os.floating_ip = "185.39.216.118"
@@ -79,14 +104,4 @@ Vagrant.configure("2") do |config|
       os.keypair_name = "julien-mac"
       os.ssh_username = "stack"
     end
-    config.vm.provision :ansible do |ansible|
-        ansible.host_key_checking = false
-        ansible.playbook = "devstack.yaml"
-        ansible.verbose = "v"
-    end
-    config.vm.provision :shell, :inline => $solum_prepare
-    config.vm.provision :shell, :inline => $murano_prepare
-    config.vm.provision :shell, :inline => $nova_docker_prepare
-    config.vm.provision :shell, :privileged => false, :inline => $stack_sh_run
-    config.vm.provision :shell, :inline => $devstack_post_install
 end

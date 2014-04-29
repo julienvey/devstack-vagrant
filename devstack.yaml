@@ -34,6 +34,7 @@
     - name: source openrc in profile
       lineinfile: dest=~/.profile regexp=".*openrc" line='. /opt/stack/devstack/openrc'
 
-    #- name: enable eth2
-    #  command: ip link set dev eth2 up
-    #  sudo: True
+    - name: enable eth2
+      command: ip link set dev eth2 up
+      sudo: True
+      when: vagrant_provider == "virtualbox"
