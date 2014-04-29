@@ -80,13 +80,13 @@ end
 
 def config_virtualbox(config)
     config.vm.provider :virtualbox do |vb, override|
-      config.vm.box = "saucy64"
-      config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box"
+      override.vm.box = "saucy64"
+      override.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box"
       # eth1, this will be the endpoint
-      config.vm.network :private_network, ip: "192.168.27.100"
+      override.vm.network :private_network, ip: "192.168.27.100"
       # eth2, this will be the OpenStack "public" network, use DevStack default
-      config.vm.network :private_network, ip: "172.24.4.225", :netmask => "255.255.255.224", :auto_config => false
-      config.vm.provision :shell, :inline => $devstack_post_install_2
+      override.vm.network :private_network, ip: "172.24.4.225", :netmask => "255.255.255.224", :auto_config => false
+      override.vm.provision :shell, :inline => $devstack_post_install_2
       vb.customize ["modifyvm", :id, "--memory", 8192]
       vb.customize ["modifyvm", :id, "--cpus", "2"]
       vb.customize ["modifyvm", :id, "--ioapic", "on"]
