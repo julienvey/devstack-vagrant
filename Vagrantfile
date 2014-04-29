@@ -36,11 +36,14 @@ SCRIPT
 $stack_sh_run = <<SCRIPT
     cd /opt/stack/devstack;
     env SOLUM_INSTALL_CEDARISH=True ./stack.sh
+SCRIPT
+
+$devstack_post_install_1 = <<SCRIPT
     # docker driver hack
     cp /opt/stack/nova-docker/etc/nova/rootwrap.d/docker.filters /etc/nova/rootwrap.d/
 SCRIPT
 
-$devstack_post_install = <<SCRIPT
+$devstack_post_install_2 = <<SCRIPT
     ovs-vsctl add-port br-ex eth2
 SCRIPT
 
