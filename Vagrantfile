@@ -75,6 +75,7 @@ def do_provision(config)
     config.vm.provision :shell, :inline => $murano_prepare
     config.vm.provision :shell, :inline => $nova_docker_prepare
     config.vm.provision :shell, :privileged => false, :inline => $stack_sh_run
+    config.vm.provision :shell, :inline => $devstack_post_install_1
 end
 
 def config_virtualbox(config)
@@ -85,7 +86,7 @@ def config_virtualbox(config)
       config.vm.network :private_network, ip: "192.168.27.100"
       # eth2, this will be the OpenStack "public" network, use DevStack default
       config.vm.network :private_network, ip: "172.24.4.225", :netmask => "255.255.255.224", :auto_config => false
-      config.vm.provision :shell, :inline => $devstack_post_install
+      config.vm.provision :shell, :inline => $devstack_post_install_2
       vb.customize ["modifyvm", :id, "--memory", 8192]
       vb.customize ["modifyvm", :id, "--cpus", "2"]
       vb.customize ["modifyvm", :id, "--ioapic", "on"]
