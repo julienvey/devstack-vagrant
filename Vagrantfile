@@ -44,10 +44,16 @@ $devstack_post_install = <<SCRIPT
     ovs-vsctl add-port br-ex eth2
 SCRIPT
 
+if ARGV.include? '--provider=openstack'
+  PROVIDER = 'openstack'
+else
+  PROVIDER = (ENV['VAGRANT_DEFAULT_PROVIDER'] || :virtualbox).to_sym
+end
+
 Vagrant.configure("2") do |config|
     config.vm.network :forwarded_port, guest: 80, host: 8080 # Horizon
     config.vm.network :forwarded_port, guest: 8774, host: 8774 # Compute API
-    
+
     do_provision(config)
     config_virtualbox(config)
     config_openstack(config)
@@ -59,7 +65,7 @@ def do_provision(config)
       ansible.playbook = "devstack.yaml"
       ansible.verbose = "v"
       ansible.extra_vars = {
-        vagrant_provider: (ARGV[2] || ENV['VAGRANT_DEFAULT_PROVIDER'] || :virtualbox).to_sym
+        vagrant_provider: PROVIDER
       }
     end
     config.vm.provision :shell, :inline => $solum_prepare
