@@ -11,7 +11,7 @@ solum: True
 murano: False
 tempest: True
 security_groups: True
-docker: True
+docker: False
 #Vagrant specific configuration
 public_ip: 185.39.216.118
 keyring_config_dir: ~/.local/share/python_keyring
