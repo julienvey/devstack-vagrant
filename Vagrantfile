@@ -35,7 +35,16 @@ SCRIPT
 
 $stack_sh_run = <<SCRIPT
     cd /opt/stack/devstack;
-    env SOLUM_INSTALL_CEDARISH=True ./stack.sh
+    SOLUM_INSTALL_CEDARISH=True ./stack.sh
+SCRIPT
+
+$solum_dashboard_install = <<SCRIPT
+   mkdir -p /opt/stack/solum-dashboard
+   git clone git://github.com/stackforge/solum-dashboard.git /opt/stack/solum-dashboard
+   sudo pip install -e /opt/stack/solum-dashboard
+   cd /opt/stack/horizon/openstack_dashboard/local/enabled
+   ln -s /opt/stack/solum-dashboard/_50_solum.py.example _50_solum.py
+   service apache2 restart
 SCRIPT
 
 $devstack_post_install_1 = <<SCRIPT
@@ -75,6 +84,7 @@ def do_provision(config)
     config.vm.provision :shell, :inline => $murano_prepare
     config.vm.provision :shell, :inline => $nova_docker_prepare
     config.vm.provision :shell, :privileged => false, :inline => $stack_sh_run
+    config.vm.provision :shell, :inline => $solum_dashboard_install
     config.vm.provision :shell, :inline => $devstack_post_install_1
 end
 
