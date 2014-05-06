@@ -35,7 +35,7 @@ SCRIPT
 
 $stack_sh_run = <<SCRIPT
     cd /opt/stack/devstack;
-    env SOLUM_INSTALL_CEDARISH=True ./stack.sh
+    ./stack.sh
 SCRIPT
 
 $solum_dashboard_install = <<SCRIPT
