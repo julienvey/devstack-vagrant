@@ -1,6 +1,5 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
-require 'vagrant-openstack-provider'
 
 $solum_prepare = <<SCRIPT
     mkdir -p /opt/stack/
@@ -57,6 +56,7 @@ $devstack_post_install_2 = <<SCRIPT
 SCRIPT
 
 if ARGV.include? '--provider=openstack'
+  require 'vagrant-openstack-provider'
   PROVIDER = 'openstack'
 else
   PROVIDER = (ENV['VAGRANT_DEFAULT_PROVIDER'] || :virtualbox).to_sym
