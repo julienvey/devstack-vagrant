@@ -20,6 +20,15 @@ $murano_prepare = <<SCRIPT
     cp extras.d/70-murano.sh /opt/stack/devstack/extras.d
 SCRIPT
 
+$mistral_prepare = <<SCRIPT
+    mkdir -p /opt/stack/
+    mkdir -p /opt/stack/mistral
+    git clone git://github.com/stackforge/mistral.git /opt/stack/mistral
+    cd /opt/stack/mistral/contrib/devstack
+    cp lib/mistral /opt/stack/devstack/lib
+    cp extras.d/70-mistral.sh /opt/stack/devstack/extras.d
+SCRIPT
+
 $nova_docker_prepare = <<SCRIPT
     mkdir -p /opt/stack/
     mkdir -p /opt/stack/nova-docker
@@ -74,6 +83,7 @@ def do_provision(config)
     end
     config.vm.provision :shell, :inline => $solum_prepare
     config.vm.provision :shell, :inline => $murano_prepare
+    config.vm.provision :shell, :inline => $mistral_prepare
     config.vm.provision :shell, :inline => $nova_docker_prepare
     config.vm.provision :shell, :privileged => false, :inline => $stack_sh_run
     config.vm.provision :shell, :inline => $solum_dashboard_install

@@ -82,6 +82,10 @@ enable_service q-meta
 enable_service neutron
 {% endif %}
 
+{% if mistral %}
+enable_service mistral
+{% endif %}
+
 {% if swift %}
 # Enable Swift
 enable_service s-proxy
