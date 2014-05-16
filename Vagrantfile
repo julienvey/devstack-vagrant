@@ -27,9 +27,6 @@ $nova_docker_prepare = <<SCRIPT
     cd /opt/stack/nova-docker/contrib/devstack
     cp lib/nova_plugins/hypervisor-docker /opt/stack/devstack/lib/nova_plugins
     cp extras.d/70-docker.sh /opt/stack/devstack/extras.d
-    # Hack around https://bugs.launchpad.net/nova-docker/+bug/1309490
-    mkdir -p /opt/stack/nova
-    git clone git://github.com/openstack/nova.git /opt/stack/nova
 SCRIPT
 
 $stack_sh_run = <<SCRIPT
@@ -46,12 +43,7 @@ $solum_dashboard_install = <<SCRIPT
    service apache2 restart
 SCRIPT
 
-$devstack_post_install_1 = <<SCRIPT
-    # docker driver hack
-    cp /opt/stack/nova-docker/etc/nova/rootwrap.d/docker.filters /etc/nova/rootwrap.d/
-SCRIPT
-
-$devstack_post_install_2 = <<SCRIPT
+$devstack_post_install = <<SCRIPT
     ovs-vsctl add-port br-ex eth2
 SCRIPT
 
@@ -85,7 +77,6 @@ def do_provision(config)
     config.vm.provision :shell, :inline => $nova_docker_prepare
     config.vm.provision :shell, :privileged => false, :inline => $stack_sh_run
     config.vm.provision :shell, :inline => $solum_dashboard_install
-    config.vm.provision :shell, :inline => $devstack_post_install_1
 end
 
 def config_virtualbox(config)
@@ -96,7 +87,7 @@ def config_virtualbox(config)
       override.vm.network :private_network, ip: "192.168.27.100"
       # eth2, this will be the OpenStack "public" network, use DevStack default
       override.vm.network :private_network, ip: "172.24.4.225", :netmask => "255.255.255.224", :auto_config => false
-      override.vm.provision :shell, :inline => $devstack_post_install_2
+      override.vm.provision :shell, :inline => $devstack_post_install
       vb.customize ["modifyvm", :id, "--memory", 8192]
       vb.customize ["modifyvm", :id, "--cpus", "2"]
       vb.customize ["modifyvm", :id, "--ioapic", "on"]
