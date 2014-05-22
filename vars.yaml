@@ -9,7 +9,7 @@ neutron: True
 swift: True
 solum: True
 murano: False
-mistral: True
+mistral: False
 tempest: True
 security_groups: True
 docker: True
