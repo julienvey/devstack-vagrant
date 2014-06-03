@@ -81,6 +81,19 @@ enable_service q-meta
 enable_service neutron
 {% endif %}
 
+{% if ceilometer %}
+#
+# Enable Ceilometer
+#
+enable_service ceilometer-acompute
+enable_service ceilometer-acentral
+enable_service ceilometer-anotification
+enable_service ceilometer-collector
+enable_service ceilometer-api
+enable_service ceilometer-alarm-notifier
+enable_service ceilometer-alarm-evaluator
+{% endif %}
+
 {% if mistral %}
 enable_service mistral
 {% endif %}

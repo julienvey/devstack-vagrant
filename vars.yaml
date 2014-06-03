@@ -6,6 +6,7 @@ git_mirror: git.openstack.org
 reclone: False
 #Openstack: Enable/Disable services and features
 neutron: True
+ceilometer: True
 swift: False
 solum: True
 murano: False
