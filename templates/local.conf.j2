@@ -92,6 +92,8 @@ enable_service ceilometer-collector
 enable_service ceilometer-api
 enable_service ceilometer-alarm-notifier
 enable_service ceilometer-alarm-evaluator
+
+CEILOMETER_PIPELINE_INTERVAL=60
 {% endif %}
 
 {% if mistral %}
