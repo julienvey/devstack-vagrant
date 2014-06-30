@@ -136,3 +136,8 @@ LIBVIRT_FIREWALL_DRIVER=nova.virt.firewall.NoopFirewallDriver
 {% if not tempest %}
 disable_service tempest
 {% endif %}
+
+{% if marconi %}
+# Enable Marconi
+enable_service marconi-server
+{% endif %}
