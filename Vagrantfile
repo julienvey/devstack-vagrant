@@ -110,17 +110,14 @@ def config_openstack(config)
     config.vm.provider :openstack do |os, override|
       override.vm.box = "dummy-openstack"
       override.vm.box_url = "https://github.com/ggiamarchi/vagrant-openstack/raw/master/source/dummy.box"
-      override.ssh.private_key_path = '~/.ssh/id_rsa'
       os.server_name = "vagrant-devstack"
       os.username = ENV['OS_USERNAME']
-      os.floating_ip = "185.39.216.45"
+      os.floating_ip_pool = "PublicNetwork-01"
       os.password = ENV['OS_PASSWORD']
-      #os.network = "private"
       os.flavor = /4_vCPU_RAM_32G_HD_10G/
       os.image = /ubuntu-12.04_x86_64_LVM/
       os.openstack_auth_url = ENV['OS_AUTH_URL']
       os.tenant_name = ENV['OS_TENANT_NAME']
-      os.keypair_name = "julien-mac"
       os.ssh_username = "stack"
     end
 end
