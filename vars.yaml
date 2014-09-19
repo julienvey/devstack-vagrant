@@ -8,13 +8,13 @@ reclone: False
 neutron: True
 ceilometer: True
 swift: False
-solum: True
+solum: False
 murano: False
 mistral: False
 tempest: True
 security_groups: True
-docker: True
-marconi: True
+docker: False
+marconi: False
 #Vagrant specific configuration
 public_ip: 192.168.27.100
 keyring_config_dir: ~/.local/share/python_keyring
