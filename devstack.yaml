@@ -26,7 +26,7 @@
       sudo: True
 
     - name: checkout devstack
-      git: "repo=git://{{ git_mirror }}/openstack-dev/devstack.git dest=/opt/stack/devstack version={{ devstack_branch }}"
+      git: "repo=git://{{ git_mirror }}/openstack-dev/devstack.git dest=/opt/stack/devstack version={{ devstack_branch }} accept_hostkey=yes"
 
     - name: local.conf
       template: src=templates/local.conf.j2 dest=/opt/stack/devstack/local.conf
