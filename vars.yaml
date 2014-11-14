@@ -15,6 +15,7 @@ tempest: True
 security_groups: True
 docker: False
 marconi: False
+trove: True
 #Vagrant specific configuration
 public_ip: 192.168.27.100
 keyring_config_dir: ~/.local/share/python_keyring

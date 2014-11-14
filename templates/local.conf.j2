@@ -49,6 +49,7 @@ CINDERCLIENT_BRANCH={{ openstack_branch }}
 CEILOMETERCLIENT_BRANCH={{ openstack_branch }}
 OPENSTACKCLIENT_BRANCH={{ openstack_branch }}
 SOLUM_BRANCH={{ openstack_branch }}
+TROVE_BRANCH={{ openstack_branch }}
 
 HORIZON_REPO=git://{{ git_mirror }}/openstack/horizon.git
 KEYSTONE_REPO=git://{{ git_mirror }}/openstack/keystone.git
@@ -66,6 +67,8 @@ CINDERCLIENT_REPO=git://{{ git_mirror }}/openstack/python-cinderclient.git
 CEILOMETERCLIENT_REPO=git://{{ git_mirror }}/openstack/python-ceilometerclient.git
 OPENSTACKCLIENT_REPO=git://{{ git_mirror }}/openstack/python-openstackclient.git
 SOLUM_REPO=git://{{ git_mirror }}/stackforge/solum.git
+TROVECLIENT_REPO=git://{{ git_mirror }}/openstack/python-troveclient.git
+TROVE_REPO=git://{{ git_mirror }}/openstack/trove.git
 
 {% if neutron %}
 #
@@ -141,3 +144,12 @@ disable_service tempest
 # Enable Marconi
 enable_service marconi-server
 {% endif %}
+
+{% if trove %}
+# Enable Trove
+enable_service trove
+enable_service tr-api
+enable_service tr-tmgr
+enable_service tr-cond
+{% endif %}
+
