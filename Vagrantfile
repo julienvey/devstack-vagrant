@@ -44,6 +44,7 @@ $stack_sh_run = <<SCRIPT
 SCRIPT
 
 $solum_dashboard_install = <<SCRIPT
+   [ $(grep -e "^solum:" /vagrant/vars.yaml | cut -f2 -d" ") == 'False' ] && exit 0
    mkdir -p /opt/stack/solum-dashboard
    git clone git://github.com/stackforge/solum-dashboard.git /opt/stack/solum-dashboard
    sudo pip install -e /opt/stack/solum-dashboard
