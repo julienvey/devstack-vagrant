@@ -92,8 +92,8 @@ end
 
 def config_virtualbox(config)
     config.vm.provider :virtualbox do |vb, override|
-      override.vm.box = "saucy64"
-      override.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/saucy/current/saucy-server-cloudimg-amd64-vagrant-disk1.box"
+      config.vm.box = "trusty64"
+      config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
       # eth1, this will be the endpoint
       override.vm.network :private_network, ip: "192.168.27.100"
       # eth2, this will be the OpenStack "public" network, use DevStack default
