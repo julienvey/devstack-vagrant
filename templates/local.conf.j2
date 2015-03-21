@@ -32,6 +32,8 @@ IMAGE_URLS=http://download.cirros-cloud.net/0.3.1/cirros-0.3.1-x86_64-uec.tar.gz
 {% if solum %}
 IMAGE_URLS+=,http://cc42a68525a2dda0151c-9a7653a0ba84bd9342f239dc5349667e.r38.cf1.rackcdn.com/cedarish.qcow2
 {% endif %}
+# Ubuntu 14.04 Image with Murano Agent Download
+IMAGE_URLS="http://murano-files.mirantis.com/ubuntu_14_04-murano-agent_stable_juno.qcow2"
 
 HORIZON_BRANCH={{ openstack_branch }}
 KEYSTONE_BRANCH={{ openstack_branch }}
