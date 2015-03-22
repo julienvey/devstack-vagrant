@@ -24,10 +24,24 @@ Install the following applications on your local machine first:
  * [VirtualBox](http://virtualbox.org)
  * [Vagrant](http://vagrantup.com)
  * [Ansible](http://ansibleworks.com)
+ 
+To Install Ansible on Mac OSX
+Ansible uses Python and fortunately Python is already installed on modern versions of OSX.
+
+Quick summary:
+
+Install Xcode
+
+```sudo easy_install pip```
+```sudo pip install ansible```
+
+Then, if you would like to update Ansible later, just do:
+
+```sudo pip install ansible --upgrade```
 
 ## Boot the virtual machine and install DevStack
 
-    git clone https://github.com/julienvey/devstack-vagrant
+    git clone https://github.com/jolsenatx/devstack-vagrant
     cd devstack-vagrant
     vagrant up
 
