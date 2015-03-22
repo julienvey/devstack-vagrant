@@ -32,7 +32,11 @@ Quick summary:
 
 Install Xcode
 
+Install PIP
+
 ```sudo easy_install pip```
+
+Install Ansible
 
 ```sudo pip install ansible```
 
