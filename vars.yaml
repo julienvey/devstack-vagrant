@@ -8,12 +8,12 @@ reclone: False
 neutron: True
 ceilometer: True
 swift: False
-solum: False
-murano: False
+solum: True
+murano: True
 mistral: False
 tempest: True
 security_groups: True
-docker: False
+docker: True
 marconi: False
 trove: True
 #Vagrant specific configuration
