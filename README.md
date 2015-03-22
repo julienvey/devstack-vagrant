@@ -33,6 +33,7 @@ Quick summary:
 Install Xcode
 
 ```sudo easy_install pip```
+
 ```sudo pip install ansible```
 
 Then, if you would like to update Ansible later, just do:
